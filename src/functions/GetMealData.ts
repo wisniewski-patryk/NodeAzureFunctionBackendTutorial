@@ -9,7 +9,7 @@ export async function GetMealData(request: HttpRequest, context: InvocationConte
 };
 
 app.http('GetMealData', {
-    methods: ['GET', 'POST'],
+    methods: ['GET'],
     authLevel: 'anonymous',
     handler: GetMealData
 });
