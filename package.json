@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@azure/functions": "^4.6.0",
+    "typescript": "^5.7.2"
+  }
+}
