@@ -1,19 +1,19 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { BlobServiceClient } from "@azure/storage-blob";
 
-
-const sasToken = "https://<my-blob-address>.blob.core.windows.net.com?<my-sas-token>";
-const blobServiceClient = new BlobServiceClient(sasToken);
-
+const urlWithSasToken = "";
+const blobServiceClient = new BlobServiceClient(urlWithSasToken);
 
 export async function GetMealData(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     context.log(`Http function processed request for url "${request.url}"`);
 
-    const { containerName, blobName } = await request.json();
+    const requestJson = await request.json() as MealData;
 
-    if (!containerName || !blobName){
+    if (requestJson.name === undefined) {
         return { status: 400, body: "getting container or blob name fail" };
     }
+    const containerName = "meals";
+    const blobName = requestJson.name;
     try {
         const containerClient = blobServiceClient.getContainerClient(containerName);
         const blobClient = containerClient.getBlobClient(blobName);
@@ -53,3 +53,8 @@ app.http('GetMealData', {
     authLevel: 'anonymous',
     handler: GetMealData
 });
+
+
+export type MealData = {
+  name: string;
+}
